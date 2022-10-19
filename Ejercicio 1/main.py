@@ -20,3 +20,5 @@ if __name__ == '__main__':
     print('Altura:', arbol.altura())
     arbol.insertar(15)
     print('Altura:', arbol.altura())
+    arbol.insertar(19)
+    print('Altura:', arbol.altura())

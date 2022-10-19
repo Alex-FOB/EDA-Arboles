@@ -2,10 +2,8 @@ from nodo import Nodo
 
 class Arbol:
     __raiz = None
-    __altura = None #sirve para saber cual es la altura del arbol
     def __init__(self):
         self.__raiz = None
-        self.__altura = 0
     def vacio(self):
         return self.__raiz == None
     def insertar(self, dato): #Inserta el dato en el arbol
@@ -17,12 +15,8 @@ class Arbol:
                 nodo = Nodo(dato)
                 clave = aux[0].getDato()
                 if(clave > dato):
-                    if(aux[1]+1 > self.__altura):
-                        self.__altura = aux[1]+1
                     aux[0].setIzq(nodo)
                 elif(clave < dato):
-                    if(aux[1]+1 > self.__altura):
-                        self.__altura = aux[1]+1
                     aux[0].setDer(nodo)
             else:
                 raise IndexError('ERROR: dato invalido')
@@ -140,8 +134,9 @@ class Arbol:
             raise IndexError('ERROR.CAMINO: no hay camino')
         return lista
     def altura(self):
-        if(not self.vacio()):
-            return self.__altura
+        if(not self.vacio()): 
+            aux = self.__raiz
+            return self.calcAltura(aux, 0, 0)
         else:
             raise TypeError('ERROR.ALTURA: arbol vacio')
 
@@ -164,12 +159,23 @@ class Arbol:
         self.recursiva(aux.getDer())
         print(self.__raiz.getDato())
     
-    #AÑADIDO
+    #ADICIONAL
     def recursiva(self, nodo): #Analiza todo el arbol de manera recursiva
         if(nodo != None):
             self.recursiva(nodo.getIzq())
             print(nodo.getDato())
             self.recursiva(nodo.getDer())
+    def calcAltura(self, nodo, altura, max):
+        if(nodo != None):
+            dato = self.calcAltura(nodo.getIzq(), altura+1, max)
+            if(altura > max):
+                max = altura
+            if(dato > max):
+                max = dato
+            dato = self.calcAltura(nodo.getDer(), altura+1, max)
+            if(dato > max):
+                max = dato
+        return max
     def busqueda(self, dato, nivel = 0):
         if(not self.vacio()):
             pos = [None, None]
